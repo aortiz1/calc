@@ -37,7 +37,7 @@ const Keypad = (props) => {
             <button className = "btn keypad-primary-btn" value= "+-" onClick={props.onToggleSign}>+-</button>
             <button className = "btn keypad-primary-btn" value= "0" onClick={handleOnDigit}>0</button>
             <button className = "btn keypad-primary-btn" value= "." onClick={props.onDecimalPoint}>1</button>
-            <button className = "btn keypad-primary-btn" value= "=" onClick={props.onEquals}>1</button>
+            <button className = "btn keypad-primary-btn" value= "=" onClick={props.onEquals}>=</button>
             </div>
         </div>
     );

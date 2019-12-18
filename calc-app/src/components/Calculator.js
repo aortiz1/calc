@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 
 import CalculatorEngine from './CalculatorEngine';
+import Display from './Display';
+import ControlPanel from './ControlPanel';
+import Keypad from './Keypad';
+import History from './History';
 
 const calculator = new CalculatorEngine();
 
@@ -90,8 +94,8 @@ export default class Calculator extends Component {
     }
 
     // to do: add state changes
-    handleOnDigit() {
-        calculator.inputDigit();
+    handleOnDigit(number) {
+        calculator.inputDigit(number);
 
         this.setState(() => ({
             value: calculator.getValue()
@@ -110,28 +114,46 @@ export default class Calculator extends Component {
     handleOnEquals() {
         calculator.equals();
         this.setState(()=> ({
-
+            value: calculator.getValue().toString(),
+            expression: calculator.getExpression(),
+            history: calculator.getHistory()
         }));
     }
 
     handleOnHistorySelected(index){
         calculator.loadHistory(index);
+        this.setState(()=>({
+            value: calculator.getValue().toString()
+        }));
     }
 
     handleOnMultiply() {
         calculator.multiply();
+        this.setState(()=>({
+            value:  calculator.getValue().toString(),
+            expression:calculator.getExpression()
+        }));
     }
 
     handleOnSubstract() {
         calculator.substract();
+        this.setState(()=>({
+            value: calculator.getValue().toString(),
+            expression: calculator.getExpression()
+        }));
     }
 
     handleOnToggleStory(){
-
+        this.setState(()=>({
+            showHistory: !this.showHistory
+        }));
     }
 
     handleOnToggleSign(){
         calculator.toggleSign();
+        this.setState(()=>({
+            value:calculator.getValue()
+        }));
     }
 
 
@@ -139,9 +161,32 @@ export default class Calculator extends Component {
         return (
             <div className="row">
                 <div  className="calculator col-md-5 mx-auto">
-            
+                    <Display value={this.state.value} expression= {this.state.expression}/>
+                    <ControlPanel  anyHistory = {this.state.history.length > 0}
+                     onToggleHistory={this.handleOnToggleStory}/>
+                     {
+                         !this.state.showHistory &&
+                         <Keypad onDigit = {this.handleOnDigit}
+                            onAdd= {this.handleOnAdd}
+                            onSubstract = {this.handleOnSubstract}
+                            onDivide = {this.handleOnDivide}
+                            onMultiply = {this.handleOnMultiply}
+                            onDecimalPoint = {this.handleOnDecimalPoint}
+                            onEquals = {this.handleOnEquals}
+                            onClear={this.handleOnClear}
+                            onClearAll= {this.handleOnClearAll}
+                            onDelete={this.handleOnDelete}
+                            onToggleSign= {this.onToggleSign}
+                         />
+                     }
+                     {
+                         this.state.showHistory &&
+                         <History history= {this.state.history}
+                            onClearHistory={this.handleOnClearHistory}
+                            onSelected={this.handleOnHistorySelected}/>
+                     }
                 </div>
-
+                
             </div>
         );
     }

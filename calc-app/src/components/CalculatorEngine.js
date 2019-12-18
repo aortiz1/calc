@@ -13,14 +13,14 @@ class CalculatorEngine {
         result = '';
     }
 
-    inputDigit(){
-        // to do: validate numbers
+    inputDigit(digit){
+        debugger;
         if(result !== ''){
             result = '';
             currentValue = '';
         }
 
-        currentValue += this.inputDigit;
+        currentValue += digit;
     }
 
     inputDecimal(){
@@ -113,7 +113,8 @@ class CalculatorEngine {
         register.push(currentValue);
 
         const expression = register.join(' ');
-        result = math.evalDependencies(expression);
+        
+        result = math.evaluate(expression);
         currentValue = result.toString();
         history.splice(0, 0, { expression, result}); //agrega historia al principio del array
         register = [];
